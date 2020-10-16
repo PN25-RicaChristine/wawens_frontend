@@ -60,7 +60,7 @@
                         <div class="quantity-toggle" id="app">
                             <center>
                                 <button @click="decrement(selectedProducts)">&mdash;</button>
-                                <input type="text" v-model="selectedProducts.quantity" readonly>
+                                <input type="text" v-model="selectedProducts.sub_quantity" readonly>
                                 <button @click="increment(selectedProducts)">&#xff0b;</button>
                             </center>
                             <button id="cart" @click="toCart(selectedProducts)" data-dismiss="modal">
@@ -91,9 +91,9 @@ export default {
             selectedProducts: {},
         };
     },
-    computed:{
-        category(){
-            var category =  localStorage.getItem('category')
+    computed: {
+        category() {
+            var category = localStorage.getItem('category')
             return category
         }
     },
@@ -103,25 +103,27 @@ export default {
             var isPresent = false
             carts.find(cart => {
                 if (cart.id == object.id) {
-                    cart.quantity += object.quantity
+                    cart.sub_quantity += object.sub_quantity
+                    cart.sub_total = object.price * object.sub_quantity
                     isPresent = true
                 }
             })
             if (!isPresent) {
+                object.sub_total = object.price * object.sub_quantity
                 carts.push(object)
             }
             console.log(isPresent)
             localStorage.setItem('carts', JSON.stringify(carts))
-            object.quantity = 1
+            object.sub_quantity = 1
         },
         increment(object) {
-            object.quantity++;
+            object.sub_quantity++;
         },
         decrement(object) {
-            if (object.quantity === 1) {
-                object.quantity = 1;
+            if (object.sub_quantity === 1) {
+                object.sub_quantity = 1;
             } else {
-                object.quantity--;
+                object.sub_quantity--;
             }
         },
         retrieve() {
@@ -130,7 +132,8 @@ export default {
                     name: "Ube Halaya",
                     price: 100.50,
                     unit: "pack",
-                    quantity: 1,
+                    sub_quantity: 1,
+                    sub_total: 100.50,
                     image: require("@/assets/halaya.jpg")
                 },
                 {
@@ -138,7 +141,8 @@ export default {
                     name: "Buchi",
                     price: 70.75,
                     unit: "pack",
-                    quantity: 1,
+                    sub_quantity: 1,
+                    sub_total: 100.50,
                     image: require("@/assets/buchi.jpg")
                 },
                 {
@@ -146,7 +150,8 @@ export default {
                     name: "Ube Halaya Happy Birthday Cake",
                     price: 700.25,
                     unit: "order",
-                    quantity: 1,
+                    sub_quantity: 1,
+                    sub_total: 100.50,
                     image: require('@/assets/cake.png')
                 },
                 {
@@ -154,7 +159,8 @@ export default {
                     name: "Ubequencher",
                     price: 80.10,
                     unit: "glass",
-                    quantity: 1,
+                    sub_quantity: 1,
+                    sub_total: 100.50,
                     image: require("@/assets/ubequencher.png")
                 }
             ];

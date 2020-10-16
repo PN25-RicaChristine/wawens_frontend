@@ -21,7 +21,7 @@
                             <h4>Price: &#x20B1; {{item.price}} / {{item.unit}}</h4>
                             <span id="quantity">
                                 <button type="button" @click="decrement(item)">&mdash;</button>
-                                <input type="text" :value="item.quantity" disabled>
+                                <input type="text" :value="item.sub_quantity" disabled>
                                 <button type="button" @click="increment(item)">&#xff0b;</button>
                             </span>
                             <br>
@@ -321,7 +321,7 @@ export default {
     methods: {
         itemTotal() {
             for (let i = 0, l = this.selectedProducts.length; i < l; i++) {
-                this.order.total += (this.selectedProducts[i].price * this.selectedProducts[i].quantity)
+                this.order.total += (this.selectedProducts[i].price * this.selectedProducts[i].sub_quantity)
             }
         },
         submit() {
@@ -338,28 +338,28 @@ export default {
         },
         increment(item) {
             let price = item.price
-            let prev = item.quantity
-            item.quantity++;
-            let inc = item.quantity - prev
+            let prev = item.sub_quantity
+            item.sub_quantity++;
+            let inc = item.sub_quantity - prev
             let addon = price * inc
             this.order.total += addon
             localStorage.setItem('carts', JSON.stringify(this.selectedProducts))
         },
         decrement(item) {
             let price = item.price
-            let prev = item.quantity
-            if (item.quantity === 1) {
-                item.quantity = 1;
+            let prev = item.sub_quantity
+            if (item.sub_quantity === 1) {
+                item.sub_quantity = 1;
             } else {
-                item.quantity--;
+                item.sub_quantity--;
             }
-            let dec = prev - item.quantity
+            let dec = prev - item.sub_quantity
             let deduct = price * dec
             this.order.total -= deduct
             localStorage.setItem('carts', JSON.stringify(this.selectedProducts))
         },
         remove(item) {
-            let deduct = item.price * item.quantity
+            let deduct = item.price * item.sub_quantity
             this.order.total -= deduct
             let index = this.selectedProducts.indexOf(item);
             this.selectedProducts.splice(index, 1);

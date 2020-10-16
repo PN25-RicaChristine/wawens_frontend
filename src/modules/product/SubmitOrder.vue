@@ -19,7 +19,7 @@
                                         <h5>QUANTITY:</h5>
                                     </div>
                                     <div class="col-sm-4">
-                                        <h5>{{item.quantity}}</h5>
+                                        <h5>{{item.sub_quantity}}</h5>
                                     </div>
                                     <div class="col-sm-4">
                                         <h5>/{{item.unit}}</h5>
@@ -30,7 +30,7 @@
                                         <h5>SUBTOTAL:</h5>
                                     </div>
                                     <div class="col-sm-4">
-                                        <h5>{{item.quantity*item.price}}</h5>
+                                        <h5>{{item.sub_total}}</h5>
                                     </div>
                                 </div>
                             </div>
@@ -98,7 +98,7 @@
             <button id="cart" @click="redirect('/cart')" class="btn btn-primary btn-lg">Back to Cart</button>
         </div>
         <div class="col">
-            <button id="submit" @click="redirect('/order_status')" class="btn btn-primary btn-lg">SUBMIT ORDER</button>
+            <button id="submit" @click="direct('/order_status')" class="btn btn-primary btn-lg">SUBMIT ORDER</button>
         </div>
     </div>
 </div>
@@ -229,6 +229,7 @@ hr {
 
 <script>
 import ROUTER from "@/router";
+import axios from "axios";
 export default {
     mounted() {
         this.retrieve()
@@ -240,6 +241,30 @@ export default {
     },
     methods: {
         redirect(parameter) {
+            ROUTER.push(parameter);
+        },
+        direct(parameter) {
+            this.orderToSubmit.products.forEach(element => {
+                element.sub_total = element.price * element.sub_quantity
+            });
+            axios.post('http://172.16.32.14:8000/api/orders', {
+                account_id: 1,
+                label: 'RETAIL',
+                choosen_delivery_date: this.orderToSubmit.date,
+                choosen_delivery_time: this.orderToSubmit.time,
+                payment: this.orderToSubmit.payment,
+                active_contact: this.orderToSubmit.contact,
+                reciever_name: this.orderToSubmit.receiver,
+                delivery_address: this.orderToSubmit.address,
+                customer_message: this.orderToSubmit.message,
+                total_amount: this.orderToSubmit.total,
+                products: this.orderToSubmit.products
+            }).then((res) => {
+                console.log('order from server: ', res)
+            }).catch((error) => {
+                console.log('order from server: ', error.response)
+            })
+            // localStorage.removeItem('orders')
             ROUTER.push(parameter);
         },
         retrieve() {
