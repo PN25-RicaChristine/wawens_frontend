@@ -3,11 +3,11 @@
     <h1>ORDER STATUS</h1>
     <i><i style="color:red;">*</i>Only pending and confirmed orders will appear here, once your order is marked complete or cancelled it will no longer appear here.</i>
     <br><i><i style="color:red;">*</i>CANCEL or UPDATE on orders can only be done when order is still pending.</i>
-    <!-- <div class="empty" v-if="orderSubmitted.length == 0">
+    <div class="empty" v-if="orderSubmitted.length == 0">
         <i class="fa fa-tasks" style="color: #8028d8"></i>
         <span class="description"><b>NO ORDERS HAVE BEEN RECORDED</b></span>
         <span style="font-size: 15px;">Start ordering your UBEfavorites.</span>
-    </div> -->
+    </div>
     <div class="transaction">
         <div class="row" id="header">
             <div class="col-sm-3">DATE AND TIME ORDERED:</div>

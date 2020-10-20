@@ -264,7 +264,8 @@ export default {
             }).catch((error) => {
                 console.log('order from server: ', error.response)
             })
-            // localStorage.removeItem('orders')
+            localStorage.removeItem('orders')
+            localStorage.removeItem('carts')
             ROUTER.push(parameter);
         },
         retrieve() {
